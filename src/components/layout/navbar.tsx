@@ -29,6 +29,7 @@ import {
   Trophy,
   BarChart3,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface NavbarProps {
   isAuthenticated?: boolean
@@ -47,6 +48,8 @@ function Navbar({
 }: NavbarProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [isSearchFocused, setIsSearchFocused] = useState(false)
+
+    const router = useRouter()
 
   type NavItem =
     | { href: string; label: string; icon: React.ComponentType<{ className?: string }> }
@@ -67,9 +70,9 @@ function Navbar({
   ]
 
   const publicNavItems: NavItem[] = [
-    { href: "/#subjects", label: "Subjects" },
-    { href: "/#grades", label: "Grades" },
-    { href: "/#features", label: "Features" },
+    { href: "/#subjects", label: "Lessons" },
+    { href: "/#grades", label: "Practice" },
+    { href: "/#features", label: "Tests" },
     { href: "/about", label: "About" },
   ]
 
@@ -92,7 +95,7 @@ function Navbar({
             <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
               <Brain className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">LearnGH</span>
+            <span className="text-xl font-bold text-gray-900">learnfinity.AI</span>
             {isAuthenticated && userRole === "student" && (
               <Badge variant="secondary" className="ml-2 text-xs">
                 {userGrade}
@@ -201,10 +204,10 @@ function Navbar({
             ) : (
               <>
                 {/* Authentication Buttons */}
-                <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
+                <Button onClick={() => router.push("/login")} variant="ghost" className="text-gray-700 cursor-pointer hover:text-gray-900">
                   Sign In
                 </Button>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button onClick={() => router.push("/signup")} className="bg-gradient-to-r cursor-pointer from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   Get Started
                 </Button>
               </>
@@ -247,7 +250,7 @@ function Navbar({
 
                   {!isAuthenticated && (
                     <div className="flex flex-col space-y-3 pt-6 border-t">
-                      <Button variant="outline" className="w-full">
+                      <Button onClick={() => router.push("/login")} variant="outline" className="w-full">
                         Sign In
                       </Button>
                       <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">Get Started</Button>

@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import landingPage from "@/images/landing-page.png"
 import { Search, BookOpen, Brain, Users, Star, ChevronRight, Sparkles } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import Navbar from "@/components/layout/navbar"
 
 export default function HomePage() {
   const subjects = [
@@ -26,65 +28,23 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Brain className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">LearnGH</span>
-            </div>
-
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link href="#subjects" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Subjects
-              </Link>
-              <Link href="#grades" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Grades
-              </Link>
-              <Link href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Features
-              </Link>
-              <Link href="#about" className="text-gray-600 hover:text-gray-900 transition-colors">
-                About
-              </Link>
-            </nav>
-
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-2 bg-gray-100 rounded-full px-4 py-2">
-                <Search className="w-4 h-4 text-gray-500" />
-                <Input
-                  placeholder="Search lessons..."
-                  className="border-0 bg-transparent focus-visible:ring-0 text-sm w-48"
-                />
-              </div>
-              <Button variant="outline" className="bg-white text-gray-700 border-gray-300">
-                Sign In
-              </Button>
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                Start Learning
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+   
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <Navbar isAuthenticated={false} />
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 lg:py-24">
+      <section className="container mx-auto px-4 py-2 lg:py-2">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="space-y-2 -mt-48">
               <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border-0">
                 <Sparkles className="w-3 h-3 mr-1" />
                 AI-Powered Learning for Ghana
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Learn and grow with{" "}
+                {/* Learn and grow with{" "} */}
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  AI guidance
+                  learnfinity.AI
                 </span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
@@ -122,7 +82,7 @@ export default function HomePage() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-3xl"></div>
             <Image
-              src="/images/hero-illustration.png"
+              src={landingPage}
               alt="Students learning with AI assistance"
               width={600}
               height={500}
@@ -133,7 +93,7 @@ export default function HomePage() {
       </section>
 
       {/* Grades Section */}
-      <section id="grades" className="bg-gray-50 py-16">
+      <section id="grades" className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Learning paths for every grade</h2>
@@ -257,7 +217,7 @@ export default function HomePage() {
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Brain className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">LearnGH</span>
+                <span className="text-xl font-bold">learnfinity.AI</span>
               </div>
               <p className="text-gray-400">AI-powered learning platform for Ghanaian elementary students</p>
             </div>
