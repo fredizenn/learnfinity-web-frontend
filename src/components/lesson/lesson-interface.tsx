@@ -84,7 +84,7 @@ export default function LessonInterface({ subject }: LessonInterfaceProps) {
   ]
 
   return (
-    <div className="h-[700px] bg-slate-900 text-white flex">
+    <div className="h-full bg-slate-900 text-white flex">
       {/* Minimal Sidebar */}
       <div className="w-64 bg-slate-800/50 backdrop-blur-sm border-r border-slate-700/50 flex flex-col">
         <div className="p-4 border-b border-slate-700/50">
@@ -140,25 +140,10 @@ export default function LessonInterface({ subject }: LessonInterfaceProps) {
       {/* Main Chat Interface */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b border-slate-700/50 bg-slate-800/30 backdrop-blur-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-light">
-                Welcome to <span className="font-medium text-blue-400">learnfinity.AI</span>
-              </h1>
-              <p className="text-slate-400 mt-1">Your personal AI tutor for {subject}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="border-green-500/30 text-green-400">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2" />
-                AI Online
-              </Badge>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-auto p-6 space-y-6">
           {messages.map((message) => (
             <div
               key={message.id}

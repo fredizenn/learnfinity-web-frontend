@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/contexts/toast-context";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -22,8 +23,7 @@ const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
   weight: ["400"],
-})
-
+});
 
 export const metadata: Metadata = {
   title: "learnfinity.AI",
@@ -37,10 +37,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${nunito.variable} antialiased`}
-      >
-        {children}
+      <body className={`${nunito.variable} antialiased`}>
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

@@ -28,6 +28,7 @@ import {
   Bell,
   Trophy,
   BarChart3,
+  Lightbulb,
 } from "lucide-react"
 
 interface NavbarProps {
@@ -56,6 +57,7 @@ export default function Navbar({
     { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
     { href: "/subjects", label: "Subjects", icon: BookOpen },
     { href: "/lessons", label: "My Lessons", icon: GraduationCap },
+    { href: "/practice", label: "Practice", icon: Lightbulb },
     { href: "/achievements", label: "Achievements", icon: Trophy },
   ]
 

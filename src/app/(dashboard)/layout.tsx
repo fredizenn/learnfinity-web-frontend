@@ -28,7 +28,7 @@ export default async function DashboardLayout({
       {...layoutData}
       showSidebar={false}
       sidebarContent={<DashboardSidebar userRole={layoutData.userRole} />}
-      showFooter={true}
+      showFooter={false}
     >
       {children}
     </PageLayout>

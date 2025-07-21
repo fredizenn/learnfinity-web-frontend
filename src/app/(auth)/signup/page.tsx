@@ -1,28 +1,33 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { z } from "zod"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import AuthLayout from "../auth-layout"
-import { User, Mail, Lock, UserPlus, GraduationCap, BookOpen, Users, Brain } from "lucide-react"
-import { FormInput } from "@/components/forms/inputField"
+import { UserPlus } from "lucide-react"
+import Link from "next/link"
+import { signUp, type SignUpData } from "@/lib/auth"
+import { useToast } from "@/contexts/toast-context"
 import { Form, FormSubmit } from "@/components/forms/form"
-import { FormSelect, SelectOption } from "@/components/forms/selectField"
+import AuthLayout from "../auth-layout"
+import { FormInput } from "@/components/forms/inputField"
+import { FormSelect } from "@/components/forms/selectField"
 import { FormCheckbox } from "@/components/forms/checkboxField"
 
-// Sign up schema
+// Sign up schema matching your API
 const signUpSchema = z
   .object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email address"),
+    first_name: z.string().min(2, "First name must be at least 2 characters"),
+    last_name: z.string().min(2, "Last name must be at least 2 characters"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
     grade: z.string().min(1, "Please select your grade"),
-    parentEmail: z.string().email("Please enter a valid parent email"),
-    agreeToTerms: z.boolean().refine((val) => val === true, "You must agree to the terms"),
+    phone_number: z.string().min(10, "Please enter a valid phone number"),
+    parental_email: z.string().email("Please enter a valid parent email"),
+    date_of_birth: z.string().min(1, "Please select your date of birth"),
+    parental_consent: z.boolean().refine((val) => val === true, "Parental consent is required"),
     newsletter: z.boolean().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -30,32 +35,94 @@ const signUpSchema = z
     path: ["confirmPassword"],
   })
 
-type SignUpData = z.infer<typeof signUpSchema>
+type SignUpFormData = z.infer<typeof signUpSchema>
 
 export default function SignUpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
+  const { addToast } = useToast()
 
   const gradeOptions: SelectOption[] = [
-    { value: "grade-1", label: "Grade 1 (Ages 6-7)", group: "Primary" },
-    { value: "grade-2", label: "Grade 2 (Ages 7-8)", group: "Primary" },
-    { value: "grade-3", label: "Grade 3 (Ages 8-9)", group: "Primary" },
-    { value: "grade-4", label: "Grade 4 (Ages 9-10)", group: "Upper Primary" },
-    { value: "grade-5", label: "Grade 5 (Ages 10-11)", group: "Upper Primary" },
-    { value: "grade-6", label: "Grade 6 (Ages 11-12)", group: "Upper Primary" },
+    { value: "grade-1", label: "Grade 1 (Ages 6-7)" },
+    { value: "grade-2", label: "Grade 2 (Ages 7-8)" },
+    { value: "grade-3", label: "Grade 3 (Ages 8-9)" },
+    { value: "grade-4", label: "Grade 4 (Ages 9-10)" },
+    { value: "grade-5", label: "Grade 5 (Ages 10-11)" },
+    { value: "grade-6", label: "Grade 6 (Ages 11-12)" },
   ]
 
-  const handleSignUp = async (data: SignUpData) => {
+  // Calculate suggested birth year based on grade
+  const getSuggestedBirthYear = (grade: string) => {
+    const gradeAges: Record<string, number> = {
+      "grade-1": 6,
+      "grade-2": 7,
+      "grade-3": 8,
+      "grade-4": 9,
+      "grade-5": 10,
+      "grade-6": 11,
+    }
+
+    const age = gradeAges[grade] || 8
+    const currentYear = new Date().getFullYear()
+    return currentYear - age
+  }
+
+  const handleSignUp = async (data: SignUpFormData) => {
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2500))
-    console.log("Sign up data:", data)
-    setIsSubmitting(false)
-    // Redirect to dashboard or email verification
+
+    try {
+      // Prepare data according to your API schema
+      const signUpData: SignUpData = {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        password: data.password,
+        account_type: "individual", // Fixed as per your schema
+        country: "ghana", // Fixed as per your schema
+        date_of_birth: data.date_of_birth,
+        phone_number: data.phone_number,
+        parental_email: data.parental_email,
+        parental_consent: data.parental_consent,
+      }
+
+      const response = await signUp(signUpData)
+
+      if (response.success) {
+        // Show success toast
+        addToast({
+          type: "success",
+          title: "Account Created Successfully!",
+          message: "Please sign in with your new account credentials.",
+          duration: 6000,
+        })
+
+        // Redirect to sign-in page
+        router.push("/sign-in")
+      } else {
+        addToast({
+          type: "error",
+          title: "Registration Failed",
+          message: response.message || "Please try again.",
+        })
+      }
+    } catch (error) {
+      console.error("Sign up error:", error)
+      addToast({
+        type: "error",
+        title: "Registration Error",
+        message: "An unexpected error occurred. Please try again.",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleSocialLogin = (provider: string) => {
-    console.log(`Sign up with ${provider}`)
-    // Implement social login
+    addToast({
+      type: "info",
+      title: "Coming Soon",
+      message: `${provider} login will be available soon!`,
+    })
   }
 
   const rightSideContent = {
@@ -63,22 +130,22 @@ export default function SignUpForm() {
     subtitle: "Join thousands of students already learning with AI-powered assistance",
     features: [
       {
-        icon: Brain,
+        icon: () => <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">🧠</div>,
         title: "AI Tutor",
         description: "Get personalized help 24/7",
       },
       {
-        icon: BookOpen,
+        icon: () => <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">📚</div>,
         title: "Interactive Lessons",
         description: "Engaging content for all subjects",
       },
       {
-        icon: Users,
+        icon: () => <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">👥</div>,
         title: "Study Together",
         description: "Connect with classmates",
       },
       {
-        icon: GraduationCap,
+        icon: () => <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">🎓</div>,
         title: "Track Progress",
         description: "See your improvement over time",
       },
@@ -97,8 +164,9 @@ export default function SignUpForm() {
           <Button
             variant="outline"
             fullWidth
-            onClick={() => handleSocialLogin("google")}
+            onClick={() => handleSocialLogin("Google")}
             className="h-12 border-gray-300 hover:bg-gray-50"
+            disabled={isSubmitting}
           >
             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
               <path
@@ -124,8 +192,9 @@ export default function SignUpForm() {
           <Button
             variant="outline"
             fullWidth
-            onClick={() => handleSocialLogin("apple")}
+            onClick={() => handleSocialLogin("Apple")}
             className="h-12 border-gray-300 hover:bg-gray-50"
+            disabled={isSubmitting}
           >
             <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
@@ -144,55 +213,55 @@ export default function SignUpForm() {
           </div>
         </div>
 
-        {/* Sign Up Form */}
+        {/* Sign Up Form using our sophisticated Form components */}
         <Form
           schema={signUpSchema}
           onSubmit={handleSignUp}
           defaultValues={{
             newsletter: true,
+            date_of_birth: `${new Date().getFullYear() - 8}-01-01`, // Default to age 8
           }}
         >
           <div className="grid grid-cols-2 gap-4">
-            <FormInput
-              name="firstName"
-              label="First Name"
-              placeholder="Enter first name"
-              icon={<User className="w-4 h-4" />}
+            <FormInput name="first_name" label="First Name" placeholder="Enter first name" required />
+            <FormInput name="last_name" label="Last Name" placeholder="Enter last name" required />
+          </div>
+
+          <FormInput name="email" type="email" label="Email address" placeholder="student@example.com" required />
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormSelect
+              name="grade"
+              label="Grade Level"
+              placeholder="Select your current grade"
+              options={gradeOptions}
               required
             />
+
             <FormInput
-              name="lastName"
-              label="Last Name"
-              placeholder="Enter last name"
-              icon={<User className="w-4 h-4" />}
+              name="date_of_birth"
+              type="date"
+              label="Date of Birth"
+              description="We'll suggest this based on your grade"
               required
             />
           </div>
 
           <FormInput
-            name="email"
-            type="email"
-            label="Email address"
-            placeholder="student@example.com"
-            icon={<Mail className="w-4 h-4" />}
-            required
-          />
-
-          <FormSelect
-            name="grade"
-            label="Grade Level"
-            placeholder="Select your current grade"
-            options={gradeOptions}
+            name="phone_number"
+            type="tel"
+            label="Phone Number"
+            placeholder="+233 XX XXX XXXX"
+            description="Your contact number"
             required
           />
 
           <FormInput
-            name="parentEmail"
+            name="parental_email"
             type="email"
             label="Parent/Guardian Email"
             placeholder="parent@example.com"
             description="We'll send progress updates to this email"
-            icon={<Mail className="w-4 h-4" />}
             required
           />
 
@@ -202,7 +271,6 @@ export default function SignUpForm() {
               type="password"
               label="Password"
               placeholder="Create a password (min 8 chars)"
-              icon={<Lock className="w-4 h-4" />}
               showPasswordToggle
               required
             />
@@ -211,7 +279,6 @@ export default function SignUpForm() {
               type="password"
               label="Confirm Password"
               placeholder="Confirm your password"
-              icon={<Lock className="w-4 h-4" />}
               showPasswordToggle
               required
             />
@@ -219,10 +286,10 @@ export default function SignUpForm() {
 
           <div className="space-y-3">
             <FormCheckbox
-              name="agreeToTerms"
+              name="parental_consent"
               label={
                 <span>
-                  I agree to the{" "}
+                  I have parental consent to create this account and agree to the{" "}
                   <Link href="/terms" className="text-blue-600 hover:text-blue-500">
                     Terms & Privacy Policy
                   </Link>

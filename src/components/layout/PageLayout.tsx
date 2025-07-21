@@ -40,7 +40,7 @@ function Footer({ isAuthenticated }: FooterProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-4 text-sm text-gray-600">
-              <span>&copy; {currentYear} LearnGH</span>
+              <span>&copy; {currentYear} learnfinity.AI</span>
               <span>•</span>
               <a href="/help" className="hover:text-gray-900 transition-colors">
                 Help Center
@@ -50,7 +50,6 @@ function Footer({ isAuthenticated }: FooterProps) {
                 Privacy
               </a>
             </div>
-            <div className="text-sm text-gray-500">Made with ❤️ for Ghanaian students</div>
           </div>
         </div>
       </footer>
@@ -69,7 +68,7 @@ function Footer({ isAuthenticated }: FooterProps) {
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold">LearnGH</span>
+              <span className="text-xl font-bold">learnfinity.AI</span>
             </div>
             <p className="text-gray-400">AI-powered learning platform for Ghanaian elementary students</p>
           </div>
@@ -212,7 +211,7 @@ export default function PageLayout({
 }: PageLayoutProps) {
   // Set document title if provided
   if (title && typeof document !== "undefined") {
-    document.title = `${title} | LearnGH`
+    document.title = `${title} | learnfinity.AI`
   }
 
   // Set meta description if provided
@@ -241,7 +240,7 @@ export default function PageLayout({
       />
 
       {/* Main Content Area */}
-      <div className="flex flex-1">
+      <div className="flex overflow- flex-1">
         {/* Sidebar */}
         {showSidebar && sidebarContent && (
           <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:pt-16 lg:bg-white lg:border-r">
@@ -264,7 +263,7 @@ export default function PageLayout({
           {error ? (
             <ErrorDisplay error={error} />
           ) : (
-            <div className={cn("flex-1", fullWidth ? "w-full" : "container mx-auto px-4 py-6")}>{children}</div>
+            <div className={cn("flex-1", fullWidth ? "w-full" : "h-full w-full mx-auto")}>{children}</div>
           )}
         </main>
       </div>
