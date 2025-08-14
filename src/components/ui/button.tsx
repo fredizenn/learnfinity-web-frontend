@@ -153,7 +153,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
         rel={external ? "noopener noreferrer" : undefined}
         aria-disabled={isDisabled ? "true" : undefined}
         style={isDisabled ? { pointerEvents: "none" } : undefined}
-        {...rest}
       >
         {isLoading ? (
           <>
