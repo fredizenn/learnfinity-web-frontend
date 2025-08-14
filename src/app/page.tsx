@@ -1,6 +1,10 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function HomePage() {
+  const router = useRouter()
   const subjects = [
     { name: "Mathematics", color: "bg-blue-100 text-blue-700 hover:bg-blue-200" },
     { name: "English", color: "bg-green-100 text-green-700 hover:bg-green-200" },
@@ -34,17 +38,17 @@ export default function HomePage() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium">Math Resources</a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium">AI Tutor</a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium">Classroom</a>
+            <a href="/lessons" className="text-gray-600 hover:text-blue-600 font-medium">Lessons</a>
+            <a href="/login" className="text-gray-600 hover:text-blue-600 font-medium">AI Tutor</a>
+            <a href="/login" className="text-gray-600 hover:text-blue-600 font-medium">Practice</a>
             <a href="#" className="text-gray-600 hover:text-blue-600 font-medium">About</a>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium">
+            <button onClick={() => router.push("/login")} className="cursor-pointer px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium">
               Sign In
             </button>
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+            <button onClick={() => router.push("/signup")} className="cursor-pointer px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
               Get Started
             </button>
           </div>
