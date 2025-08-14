@@ -60,7 +60,7 @@ export const FormRadioGroup = forwardRef<HTMLDivElement, FormRadioGroupProps>(
           aria-invalid={hasError}
           aria-describedby={hasError ? `${name}-error` : description ? `${name}-description` : undefined}
         >
-          {options.map((option, index) => {
+          {options.map((option) => {
             const isSelected = field.value === option.value
             const isDisabled = disabled || option.disabled
 

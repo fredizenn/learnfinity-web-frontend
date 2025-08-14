@@ -340,6 +340,7 @@ export default function PracticeTestsPage() {
             <Button
               key={tab.key}
               variant={activeTab === tab.key ? "default" : "ghost"}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setActiveTab(tab.key as any)}
               className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                 activeTab === tab.key ? "bg-white shadow-sm text-slate-900" : "text-slate-600 hover:text-slate-900"

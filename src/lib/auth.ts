@@ -65,6 +65,7 @@ export const signUp = async (data: SignUpData): Promise<AuthResponse> => {
       message: response.data.message || "Account created successfully!",
       data: response.data.data,
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return {
       success: false,
@@ -86,6 +87,7 @@ export const signIn = async (data: SignInData): Promise<AuthResponse> => {
     }
 
     return response.data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return {
       success: false,
@@ -113,8 +115,9 @@ export const getCurrentUser = (): User | null => {
   try {
     const userData = localStorage.getItem("user_data")
     return userData ? JSON.parse(userData) : null
-  } catch (error) {
-    return null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to parse user data from localStorage")
   }
 }
 
@@ -136,7 +139,10 @@ export const refreshToken = async (): Promise<boolean> => {
     }
 
     return false
-  } catch (error) {
-    return false
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to refresh token"
+    )
   }
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { forwardRef } from "react"
+import { forwardRef, JSX } from "react"
 import { useController } from "react-hook-form"
 import { useFormContext } from "./form"
 import { FormField, FormLabel, FormError, FormDescription } from "./form"
@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 interface BaseFormFieldProps {
   name: string
-  label?: any
+  label?: JSX.Element | string
   description?: string
   required?: boolean
   className?: string

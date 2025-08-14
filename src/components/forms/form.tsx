@@ -12,6 +12,7 @@ interface FormContextType<T extends FieldValues = FieldValues> {
   form: UseFormReturn<T>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const FormContext = createContext<FormContextType<any> | null>(null);
 
 export function useFormContext<T extends FieldValues = FieldValues>() {
@@ -41,7 +42,8 @@ export function Form<T extends FieldValues = FieldValues>({
   mode = "onSubmit",
 }: FormProps<T>) {
   const form = useForm<T>({
-    resolver: schema ? zodResolver(schema) : undefined,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: schema ? zodResolver(schema as any) : undefined,
     defaultValues,
     mode,
   })

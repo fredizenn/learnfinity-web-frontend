@@ -20,7 +20,7 @@ interface AuthLayoutProps {
   }
 }
 
-export default function AuthLayout({ children, title, subtitle, rightSideContent }: AuthLayoutProps) {
+export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}

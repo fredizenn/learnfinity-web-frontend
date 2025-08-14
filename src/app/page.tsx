@@ -63,7 +63,7 @@ export default function HomePage() {
               
               <p className="text-xl text-gray-600 leading-relaxed">
                 learnfinity.AI is more than a set of free tools for Ghanaian students. 
-                It's a platform to connect enthusiastic teachers and students and offer 
+                It&apos;s a platform to connect enthusiastic teachers and students and offer 
                 them a new way to explore and learn with AI-powered assistance.
               </p>
 
