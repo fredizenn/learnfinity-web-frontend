@@ -2,12 +2,8 @@
 
 import type React from "react"
 import Link from "next/link"
-import { Brain, BookOpen, Award } from "lucide-react"
-import { Card } from "@/components/ui/card"
+import { Brain } from "lucide-react"
 import Image from "next/image"
-import sidebanner from "@/images/sidebanner.jpg"
-import sidebanner2 from "@/images/sidebanner2.jpg"
-import sidebanner3 from "@/images/sidebanner3.jpg"
 import sidebanner4 from "@/images/sidebanner4.jpg"
 interface AuthLayoutProps {
   children: React.ReactNode

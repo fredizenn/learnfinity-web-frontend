@@ -12,7 +12,7 @@ import { useToast } from "@/contexts/toast-context"
 import { Form, FormSubmit } from "@/components/forms/form"
 import AuthLayout from "../auth-layout"
 import { FormInput } from "@/components/forms/inputField"
-import { FormSelect } from "@/components/forms/selectField"
+import { FormSelect, SelectOption } from "@/components/forms/selectField"
 import { FormCheckbox } from "@/components/forms/checkboxField"
 
 // Sign up schema matching your API
@@ -52,20 +52,20 @@ export default function SignUpForm() {
   ]
 
   // Calculate suggested birth year based on grade
-  const getSuggestedBirthYear = (grade: string) => {
-    const gradeAges: Record<string, number> = {
-      "grade-1": 6,
-      "grade-2": 7,
-      "grade-3": 8,
-      "grade-4": 9,
-      "grade-5": 10,
-      "grade-6": 11,
-    }
+  // const getSuggestedBirthYear = (grade: string) => {
+  //   const gradeAges: Record<string, number> = {
+  //     "grade-1": 6,
+  //     "grade-2": 7,
+  //     "grade-3": 8,
+  //     "grade-4": 9,
+  //     "grade-5": 10,
+  //     "grade-6": 11,
+  //   }
 
-    const age = gradeAges[grade] || 8
-    const currentYear = new Date().getFullYear()
-    return currentYear - age
-  }
+  //   const age = gradeAges[grade] || 8
+  //   const currentYear = new Date().getFullYear()
+  //   return currentYear - age
+  // }
 
   const handleSignUp = async (data: SignUpFormData) => {
     setIsSubmitting(true)
