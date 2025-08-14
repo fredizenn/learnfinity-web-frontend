@@ -1,7 +1,7 @@
 import LessonInterface from "@/components/lesson/lesson-interface"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface LessonPageProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any
 }
 
